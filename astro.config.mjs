@@ -46,9 +46,9 @@ export default defineConfig({
 
   i18n: {
     locales: ['fr', 'en'],
-    defaultLocale: 'fr',
+    defaultLocale: 'en', // Change default language here
     routing: {
-      prefixDefaultLocale: false,
+      prefixDefaultLocale: false, // Change if you want /en/ instead of /
     },
   },
 

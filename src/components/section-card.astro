@@ -59,16 +59,14 @@ const {
   </CardHeader>
   <CardContent className={cn('space-y-4 flex-grow', classNameContent)}>
     {
-      imageUrl && imageAltText && (
+      imageUrl && imageAltText && (  // Define aspect ratio here
         <Image
           src={imageUrl}
           alt={imageAltText}
-          class="mb-4 h-48 w-full rounded-md object-cover"
+          class="aspect-[3/2x] w-full rounded-md overflow-hidden mb-4"
           loading="lazy"
-          width={400}
-          height={300}
           densities={[1, 1.5, 2]}
-          quality="medium"
+          quality="100"
         />
       )
     }

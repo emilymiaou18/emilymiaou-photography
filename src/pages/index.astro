@@ -1,13 +1,13 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { defaultLanguage, useTranslations, type LanguageCode } from '@/i18n/ui';
 import {
   PortfolioScreen,
   getTranslatedProjects,
   getTranslatedSkills,
   type TranslatedSkill,
   type TranslatedProject,
-} from '@/features/projects';
+} from '@/features/weddings';
+import { defaultLanguage, useTranslations, type LanguageCode } from '@/i18n/ui';
 
 const lang =
   (Astro.currentLocale as LanguageCode | undefined) ?? defaultLanguage;

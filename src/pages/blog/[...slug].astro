@@ -1,21 +1,21 @@
 ---
 import { BlogPostDetailScreen } from '@/features/blog';
-import { defaultLanguage, type LanguageCode } from '@/i18n/ui';
+import { type LanguageCode } from '@/i18n/ui';
 import { getCollection, getEntries, render } from 'astro:content';
 
-let lang = defaultLanguage as LanguageCode;
+let lang = 'en' as LanguageCode;
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog', ({ data }) => {
-    return data.isDraft !== true && data.lang === defaultLanguage;
+    return data.isDraft !== true && data.lang === 'en';
   });
   return blogEntries.map((post) => ({
     params: { slug: post.id },
     props: { post },
   }));
 }
-const { post } = Astro.props;
 
+const { post } = Astro.props;
 const baseRelatedPosts = post.data.relatedPosts
   ? await getEntries(post.data.relatedPosts)
   : [];

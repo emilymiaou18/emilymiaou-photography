@@ -1,15 +1,13 @@
 ---
+import { type LanguageCode } from '@/i18n/ui';
 import { AllBlogPostsScreen } from '@/features/blog';
-import { defaultLanguage, useTranslations, type LanguageCode } from '@/i18n/ui';
 import { getCollection, render, type CollectionEntry } from 'astro:content';
-
-const lang = (Astro.currentLocale ?? defaultLanguage) as LanguageCode;
-const t = useTranslations(lang, 'blogPage');
+const lang = (Astro.currentLocale ?? 'en') as LanguageCode;
 
 const blogEntries: Array<CollectionEntry<'blog'>> = await getCollection(
   'blog',
   ({ data, id }) => {
-    return data.isDraft !== true && id.startsWith('fr/');
+    return data.isDraft !== true && id.startsWith('en/');
   }
 );
 

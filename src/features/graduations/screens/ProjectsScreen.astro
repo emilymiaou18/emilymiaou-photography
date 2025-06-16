@@ -15,7 +15,7 @@ export type Props = {
 const { projects, t, lang } = Astro.props;
 
 const graduationPhotos = Object.entries(import.meta.glob(
-  'src/assets/Graduations/*.webp',
+  '/src/assets/Graduations/*.webp',
   { eager: true, import: 'default' }
 )).map(([path, src], index) => ({
   id: path,

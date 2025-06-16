@@ -1,8 +1,9 @@
 ---
-import type { LanguageCode, ui } from '@/i18n/ui';
+import type { LanguageCode, ui } from '@/i18n/events_ui';
 import SectionCard from '@/components/section-card.astro';
 import { EmptyState } from '@/components/empty-state';
 import Heading from '@/components/Heading.astro';
+import RenderImageRow from '@/features/graduations/components/RenderedRow.tsx';
 import type { TranslatedProject } from '../type';
 
 export type Props = {
@@ -12,44 +13,66 @@ export type Props = {
 };
 
 const { projects, t, lang } = Astro.props;
-const projectsPageTranslations = t.projectsPage; // For easier access
+
+const graduationPhotos = Object.entries(import.meta.glob(
+  '/src/assets/Graduations/*.webp',
+  { eager: true, import: 'default' }
+)).map(([path, src], index) => ({
+  id: path,
+  src,
+}));
+
+const allImages = graduationPhotos.slice(0);
+
 ---
 
 <div class="py-12 md:py-16">
-  <Heading title={projectsPageTranslations?.title ?? 'Projects'} />
+  <Heading title={'Graduations'} />
+    <div
+      class="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-400"
+    ></div>
   {
-    projects && projects.length > 0 ? (
-      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project: TranslatedProject) => {
-          const projectUrl = `${lang === 'fr' ? '' : '/' + lang}/weddings/${project.slug}`;
-          return (
-            <a
-              href={projectUrl}
-              aria-label={`View project ${project.title}`}
-              class="flex rounded-lg transition-shadow duration-200 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-            >
-              <SectionCard
-                title={project.title}
-                categoryText={project.categoryText}
-                className="w-full"
-                classNameTitle="text-xl"
-                tags={project.tags ?? []}
-                imageUrl={project.imageUrl}
-                imageAltText={project.imageAltText}
-              >
-                <p class="text-sm text-muted-foreground">
-                  {project.description}
-                </p>
-              </SectionCard>
-            </a>
-          );
-        })}
-      </div>
-    ) : (
-      <EmptyState
-        title={projectsPageTranslations?.noProjects}
-        description={projectsPageTranslations?.noProjectsDescription}
-      />
-    )
+    graduationPhotos.length > 0 && (() => {
+      const renderedRows = [];
+      while (allImages.length >= 3) {
+        const img1 = allImages[0];
+        const img2 = allImages[1];
+        const img3 = allImages[2];
+        const img1Horizontal = img1.id.includes('horizontal');
+        const img2Horizontal = img2.id.includes('horizontal');
+        const img3Horizontal = img3.id.includes('horizontal');
+        console.log('img1', img1.id, 'img2', img2.id, 'img3', img3.id);
+        if (img1Horizontal && img2Horizontal) {
+          renderedRows.push(<RenderImageRow images={[img1.src, img2.src]} layout="HH" />);
+          allImages.splice(0, 2);
+        }
+        else if (img1Horizontal && img3Horizontal) {
+          renderedRows.push(<RenderImageRow images={[img1.src, img3.src]} layout="HH" />);
+          allImages.splice(0, 1);
+          allImages.splice(1, 1);
+        }
+        else if (img2Horizontal && img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img2.src, img3.src]} layout="HH" />);
+            allImages.splice(1, 2);
+        }
+        else {
+          if (img1Horizontal && !img2Horizontal && !img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img1.src, img2.src, img3.src]} layout="HVV" />);
+          }
+          else if (!img1Horizontal && img2Horizontal && !img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img1.src, img2.src, img3.src]} layout="VHV" />);
+          }
+          else if (!img1Horizontal && !img2Horizontal && img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img1.src, img2.src, img3.src]} layout="VVH" />);
+          }
+          else if (!img1Horizontal && !img2Horizontal && !img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img1.src, img2.src, img3.src]} layout="VVV" />);
+          }
+          allImages.splice(0, 3);
+        }
+      }
+      return <div class="mb-1 flex flex-col justify-center">{renderedRows}</div>;
+  })()
   }
+
 </div>

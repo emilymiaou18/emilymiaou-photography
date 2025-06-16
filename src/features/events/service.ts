@@ -1,42 +1,55 @@
 // Import i18n utilities
-import { ui, defaultLanguage, type LanguageCode } from '@/i18n/weddings_ui';
-import placeholderImage from '@/assets/placeholder.webp';
+import { ui, defaultLanguage, type LanguageCode } from '@/i18n/events_ui';
+// import placeholderImage from '@/assets/placeholder.webp';
 import type {
-  ProjectData,
-  SkillData,
-  TranslatedProject,
-  TranslatedSkill,
+  ProjectData, TranslatedProject
 } from './type';
+
+const SocalScioly2023 = Object.entries(import.meta.glob(
+  '/src/assets/Events/2023-04-08 SoCal State Science Olympiad/*.webp',
+  { eager: true, import: 'default' }
+)).map(([path, src], index) => ({
+  id: path,
+  src,
+}));
+
+const AveryDD2019 = Object.entries(import.meta.glob(
+  '/src/assets/Events/2019-05-23 Avery DD/*.webp',
+  { eager: true, import: 'default' }
+)).map(([path, src], index) => ({
+  id: path,
+  src,
+}));
+
+const RioHondoScioly2020 = Object.entries(import.meta.glob(
+  '/src/assets/Events/2020-02-01 Rio Hondo Science Olympiad/*.webp',
+  { eager: true, import: 'default' }
+)).map(([path, src], index) => ({
+  id: path,
+  src,
+}));
+
 
 const projectsListUnsorted: Array<ProjectData> = [
   {
-    id: 'fakeWedding', // Unique identifier for translations
-    slug: 'fake-wedding', // Used in the URL
-    imageUrl: placeholderImage, // Use imported ImageMetadata
-    // projectUrl: '#', // Optional: Link to the live project
-    // codeUrl: '#', // Optional: Link to the source code
-    tags: ['Astro', 'TypeScript', 'Template'], // Generic tags
-    category: 'Web Application', // Generic category
-    date: '2025-01-01', // Generic date
-    galleryImages: [
-      // Optional: Gallery images for the project
-      {
-        id: 'sampleGalleryImage1',
-        src: placeholderImage, // Placeholder, needs ImageMetadata
-      },
-    ],
-    keyFeatures: [
-      // Key features (IDs for translation)
-      // { id: 'responsiveDesign' },
-      // { id: 'contentManagement' },
-    ],
-    technologiesUsed: [
-      // Technologies used (IDs for display)
-      { id: 'astro', name: 'Astro' },
-      { id: 'typescript', name: 'TypeScript' },
-      { id: 'tailwindcss', name: 'TailwindCSS' },
-    ],
+    id: 'SocalScioly2023', // Unique identifier for translations
+    slug: 'socal-scioly-2023', // Used in the URL
+    date: '2023-04-08', // Generic date
+    galleryImages: SocalScioly2023,
   },
+  {
+    id: 'AveryDD2019', // Unique identifier for translations
+    slug: 'avery-dd-2019', // Used in the URL
+    date: '2019-05-23', // Generic date
+    galleryImages: AveryDD2019,
+  },
+  {
+    id: 'RioHondoScioly2020', // Unique identifier for translations
+    slug: 'rio-hondo-scioly-2020', // Used in the URL
+    date: '2020-02-01', // Generic date
+    galleryImages: RioHondoScioly2020,
+  },
+  
 ];
 
 export const projectsList = [...projectsListUnsorted].sort((a, b) => {
@@ -72,7 +85,7 @@ function translateProject(
       title: project.id, // Fallback title
       description: 'Description missing for this project.', // Fallback description
       imageAltText: 'Placeholder image', // Fallback alt text
-      categoryText: project.category,
+      // categoryText: project.category,
       dateText: project.date,
       detailedDescription: 'Detailed description missing.',
       keyFeaturesTranslated:

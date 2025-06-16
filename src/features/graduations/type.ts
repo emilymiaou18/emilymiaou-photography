@@ -19,13 +19,9 @@ export type GalleryImage = {
 export type ProjectData = {
   id: string; // Keep as is, used for main i18n key and internal reference
   slug: string; // New: for URL generation, e.g., 'my-awesome-project'
-  imageUrl?: ImageMetadata; // Main project image, keep as is
-  projectUrl?: string; // Link to live project, keep as is
-  codeUrl?: string; // Link to source code, keep as is
-  tags: Array<string>; // Existing tags, can be used for quick filtering or display
+  // imageUrl?: ImageMetadata; // Main project image, keep as is
 
   // New fields for detailed project page
-  category?: string; // New: e.g., 'Web Application', 'Mobile App', 'Data Science'. Will be translated.
   date: string; // New: e.g., '2023-06-15', 'Jan 2023 - Mar 2024'. Will be translated.
 
   // galleryImages will have their alt/captions translated, so the structure itself is here
@@ -66,8 +62,6 @@ export type TranslatedProject = ProjectData & {
     caption: string; // Translated caption
   }>;
   keyFeaturesTranslated?: Array<TranslatedKeyFeature>; // Key features with translated titles/descriptions
-  challenges?: string; // Description of challenges faced (translated)
-  learnings?: string; // Key learnings from the project (translated)
   // technologiesUsed.name will be translated if needed, or could be kept as is if they are proper names
 };
 

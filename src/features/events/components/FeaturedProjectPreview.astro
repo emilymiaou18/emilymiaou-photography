@@ -16,12 +16,12 @@ export type Props = {
 };
 
 const { lang, slug, title, imageUrl, imageAltText, ctaText } = Astro.props;
-const projectUrl = getRelativeLocaleUrl(lang, `/projects/${slug}`);
+const projectUrl = getRelativeLocaleUrl(lang, `/weddings/${slug}`); // Change url of featured projects here
 ---
-
+<!-- w-full h-80 -->
 <a
-  href={projectUrl}
-  class="group relative block w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-lg focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+  href={projectUrl} 
+  class="group relative aspect-square block md:h-96 rounded-lg overflow-hidden shadow-lg focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 >
   {
     imageUrl ? (

@@ -1,12 +1,12 @@
 // Import i18n utilities
 import { ui, defaultLanguage, type LanguageCode } from '@/i18n/weddings_ui';
-import placeholderImage from '@/assets/placeholder.webp';
+// import placeholderImage from '@/assets/placeholder.webp';
 import type {
   ProjectData, TranslatedProject
 } from './type';
 
 const GloriaHaoEngagement = Object.entries(import.meta.glob(
-  '/src/assets/2022-09-12 Gloria & Hao Engagement/*.webp',
+  '/src/assets/Weddings/2022-09-12 Gloria & Hao Engagement/*.webp',
   { eager: true, import: 'default' }
 )).map(([path, src], index) => ({
   id: path,
@@ -14,7 +14,7 @@ const GloriaHaoEngagement = Object.entries(import.meta.glob(
 }));
 
 const EugeneFloWedding = Object.entries(import.meta.glob(
-  '/src/assets/2022-08-05 Eugene & Flo Wedding/*.webp',
+  '/src/assets/Weddings/2022-08-05 Eugene & Flo Wedding/*.webp',
   { eager: true, import: 'default' }
 )).map(([path, src], index) => ({
   id: path,
@@ -22,13 +22,22 @@ const EugeneFloWedding = Object.entries(import.meta.glob(
 }));
 
 const TylerJiayiWedding = Object.entries(import.meta.glob(
-  '/src/assets/2022-02-22 Tyler & Jiayi Wedding/*.webp',
+  '/src/assets/Weddings/2022-02-22 Tyler & Jiayi Wedding/*.webp',
   { eager: true, import: 'default' }
 )).map(([path, src], index) => ({
   id: path,
   src,
 }));
 
+const SunnyDJWedding = Object.entries(import.meta.glob(
+  '/src/assets/Weddings/2021-09-04 Sunny & DJ Wedding/*.webp',
+  { eager: true, import: 'default' }
+)).map(([path, src], index) => ({
+  id: path,
+  src,
+}));
+
+console.log('SunnyDJWedding:', SunnyDJWedding);
 
 const projectsListUnsorted: Array<ProjectData> = [
   {
@@ -48,6 +57,12 @@ const projectsListUnsorted: Array<ProjectData> = [
     slug: 'tyler-jiayi', // Used in the URL
     date: '2022-02-22', // Generic date
     galleryImages: TylerJiayiWedding,
+  },
+  {
+    id: 'SunnyDJ', // Unique identifier for translations
+    slug: 'sunny-dj', // Used in the URL
+    date: '2021-09-04', // Generic date
+    galleryImages: SunnyDJWedding,
   },
 ];
 

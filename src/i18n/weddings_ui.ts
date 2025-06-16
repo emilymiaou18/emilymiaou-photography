@@ -18,15 +18,6 @@ export const ui = {
         detailedDescription:
           'Gloria and Hao is getting engaged! Woohoo!',
         keyFeatures: {
-          // responsiveDesign: {
-          //   title: '',
-          //   description: '',
-          // },
-          // contentManagement: {
-          //   title: '',
-          //   description:
-          //     '',
-          // },
         },
         galleryImages: {
           sampleGalleryImage1: { // If you enable gallery for the example
@@ -47,15 +38,6 @@ export const ui = {
         detailedDescription:
           'Eugene and Flo is getting married! Woohoo!',
         keyFeatures: {
-          // responsiveDesign: {
-          //   title: '',
-          //   description: '',
-          // },
-          // contentManagement: {
-          //   title: '',
-          //   description:
-          //     '',
-          // },
         },
       },
       TylerJiayi: {
@@ -67,15 +49,26 @@ export const ui = {
         detailedDescription:
           'Tyler and Jiayi is getting married! Woohoo!',
         keyFeatures: {
-          // responsiveDesign: {
-          //   title: '',
-          //   description: '',
-          // },
-          // contentManagement: {
-          //   title: '',
-          //   description:
-          //     '',
-          // },
+        },
+        galleryImages: {
+          sampleGalleryImage1: { // If you enable gallery for the example
+            alt: 'Alt text for gallery image 1',
+            caption: 'Caption for gallery image 1',
+          },
+        },
+        challenges:
+          '',
+        learnings: '',
+      },
+      SunnyDJ: {
+        title: "Sunny and DJ's Wedding",
+        description: 'Sunny and DJ is getting married!',
+        imageAltText: 'Placeholder image for the sample project',
+        categoryText: 'Wedding',
+        dateText: '2021-09-04',
+        detailedDescription:
+          'Sunny and DJ is getting married! Woohoo!',
+        keyFeatures: {
         },
         galleryImages: {
           sampleGalleryImage1: { // If you enable gallery for the example
@@ -89,23 +82,6 @@ export const ui = {
       },
     },
     skillsContent: {
-      // frontendDevelopment: {
-      //   title: 'Frontend Development',
-      //   description:
-      //     'Building interactive and high-performance user interfaces.',
-      // },
-      // backendDevelopment: {
-      //   title: 'Backend Development',
-      //   description: 'Constructing robust server logic and APIs.',
-      // },
-      // uiUxDesign: {
-      //   title: 'UI/UX Design',
-      //   description: 'Designing intuitive and aesthetic user experiences.',
-      // },
-      // devOps: {
-      //   title: 'DevOps',
-      //   description: 'Automating development and deployment processes.',
-      // },
     },
     site: {
       title: 'Emily Miaou Photography',
@@ -118,7 +94,8 @@ export const ui = {
       weddings: 'Weddings',
       contact: 'Contact',
       events: 'Events',
-      landscape: 'Landscape',
+      landscapes: 'Landscapes',
+      miscellanies: 'Miscellanies',
     },
     footer: {
       rights: 'All rights reserved.',

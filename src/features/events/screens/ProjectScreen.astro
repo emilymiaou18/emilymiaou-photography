@@ -2,11 +2,16 @@
 import Heading from '@/components/Heading.astro';
 import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
+import RenderImageRow from '../components/RenderedRow';
 import { type LanguageCode, defaultLanguage, type ui } from '@/i18n/ui';
 import { Image } from 'astro:assets';
 import { Code, ExternalLink } from 'lucide-react';
 import ProjectGallery from '../components/ProjectGallery';
 import type { TranslatedProject } from '../type';
+import { render } from 'astro:content';
+import type { imageMetadata } from 'astro/assets/utils';
+
+// import * as React from 'react';
 
 export type Props = {
   project: TranslatedProject;
@@ -15,12 +20,19 @@ export type Props = {
 };
 
 const { project, t, lang } = Astro.props;
+ 
+// const verticalImages = project.galleryImagesTranslated?.filter((img) => img.id.includes('vertical'));
+// const horizontalImages = project.galleryImagesTranslated?.filter((img) => img.id.includes('horizontal'));
+// var horizontalIndex = 0;
+// var verticalIndex = 0;
+const allImages = project.galleryImagesTranslated?.slice() || [];
+
 ---
 
 <div class="py-12 md:py-16">
   <article class="prose lg:prose-xl max-w-none dark:prose-invert">
     <a
-      href={`${lang !== defaultLanguage ? `/${lang}` : ''}/projects`}
+      href={`${lang !== defaultLanguage ? `/${lang}` : ''}/events`}
       class={buttonVariants({ variant: 'ghost' }) + ' mb-6 no-underline'}
     >
       &larr; {t.projectDetailPage?.backToProjects ?? 'Back to Projects'}
@@ -54,30 +66,6 @@ const { project, t, lang } = Astro.props;
       }
     </div>
 
-    <!-- Image -->
-    {
-      project.imageUrl && (
-        <div class="mb-8 aspect-[16/9] overflow-hidden rounded-lg shadow-lg">
-          <Image
-            src={project.imageUrl}
-            alt={project.imageAltText}
-            class="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
-            widths={[400, 800, 1200]}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        </div>
-              <div class="mb-8 aspect-[16/9] overflow-hidden rounded-lg shadow-lg">
-          <Image
-            src={project.imageUrl}
-            alt={project.imageAltText}
-            class="h-full w-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
-            widths={[400, 800, 1200]}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
-        </div>
-      )
-    }
-
     <!-- Detailed Description -->
     {
       project.detailedDescription && (
@@ -87,40 +75,51 @@ const { project, t, lang } = Astro.props;
         </section>
       )
     }
-
-    {
-      project.keyFeaturesTranslated &&
-        project.keyFeaturesTranslated.length > 0 && (
-          <section class="mb-8">
-            <h2>{t.projectDetailPage?.keyFeaturesTitle ?? 'Key Features'}</h2>
-            <ul class="pl-5 list-disc">
-              {project.keyFeaturesTranslated.map((feature) => (
-                <li>
-                  <strong>{feature.title}:</strong> {feature.description}
-                </li>
-              ))}
-            </ul>
-          </section>
-        )
-    }
-
+    
+    <!-- Assuming number of verticals == number of horizontals can be divided by three -->
     {/* Gallery */}
-
-    {
-      project.galleryImagesTranslated &&
-        project.galleryImagesTranslated.length > 0 && (
-          <ProjectGallery
-            client:visible
-            images={project.galleryImagesTranslated.map((image) => ({
-              src: image.src.src,
-              alt: image.alt,
-              caption: image.caption,
-              id: image.id,
-            }))}
-          />
-        )
-    }
-
+    {project.galleryImagesTranslated && project.galleryImagesTranslated.length > 0 && (() => {
+      const renderedRows = [];
+      while (allImages.length >= 3) {
+        const img1 = allImages[0];
+        const img2 = allImages[1];
+        const img3 = allImages[2];
+        const img1Horizontal = img1.id.includes('horizontal');
+        const img2Horizontal = img2.id.includes('horizontal');
+        const img3Horizontal = img3.id.includes('horizontal');
+        console.log('img1', img1.id, 'img2', img2.id, 'img3', img3.id);
+        if (img1Horizontal && img2Horizontal) {
+          renderedRows.push(<RenderImageRow images={[img1.src, img2.src]} layout="HH" />);
+          allImages.splice(0, 2);
+        }
+        else if (img1Horizontal && img3Horizontal) {
+          renderedRows.push(<RenderImageRow images={[img1.src, img3.src]} layout="HH" />);
+          allImages.splice(0, 1);
+          allImages.splice(1, 1);
+        }
+        else if (img2Horizontal && img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img2.src, img3.src]} layout="HH" />);
+            allImages.splice(1, 2);
+        }
+        else {
+          if (img1Horizontal && !img2Horizontal && !img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img1.src, img2.src, img3.src]} layout="HVV" />);
+          }
+          else if (!img1Horizontal && img2Horizontal && !img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img1.src, img2.src, img3.src]} layout="VHV" />);
+          }
+          else if (!img1Horizontal && !img2Horizontal && img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img1.src, img2.src, img3.src]} layout="VVH" />);
+          }
+          else if (!img1Horizontal && !img2Horizontal && !img3Horizontal) {
+            renderedRows.push(<RenderImageRow images={[img1.src, img2.src, img3.src]} layout="VVV" />);
+          }
+          allImages.splice(0, 3);
+        }
+      }
+      return <div class="mb-1 flex flex-col justify-center">{renderedRows}</div>;
+  })()}
+<!-- 
     {
       (project.challenges || project.learnings) && (
         <div class="grid grid-cols-1 md:gap-8 md:grid-cols-2 md:mb-8 mb-4">
@@ -143,8 +142,8 @@ const { project, t, lang } = Astro.props;
           )}
         </div>
       )
-    }
-
+    } -->
+<!-- 
     {/* Project and Code URLs */}
     <div class="mt-8 flex flex-wrap gap-4">
       {
@@ -179,4 +178,4 @@ const { project, t, lang } = Astro.props;
       }
     </div>
   </article>
-</div>
+</div> -->

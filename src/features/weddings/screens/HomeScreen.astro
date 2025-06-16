@@ -51,7 +51,7 @@ const {
 <section class="py-12 md:py-16">
   <div class="grid md:grid-cols-2 gap-12 items-center justify-between">
     {/* Hero Text Column */}
-    <div class="text-center md:text-left">
+    <div class="text-center md:text-right">
       <h1
         class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4"
       >
@@ -66,7 +66,7 @@ const {
         {heroIntroduction}
       </p>
       <div
-        class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start"
+        class="flex flex-col sm:flex-row gap-4 justify-center md:justify-end"
       >
       <!-- TODO change href to be language insensitive-->
        <a
@@ -89,15 +89,12 @@ const {
     {/* Hero Image (Placeholder for now) */}
     <div class="md:text-center">
       <div
-        class="md:w-[600px] w-full h-92 bg-muted rounded-lg shadow-xl overflow-hidden"
+        class="md:w-[600px] w-full h-full bg-muted rounded-lg shadow-xl overflow-hidden aspect-[1]"
       >
         <Image
           src={heroImage}
           alt={'User profile image'}
-          width={600}
-          height={368}
           densities={[1, 1.5, 2]}
-          quality="high"
           class="h-full w-full object-cover"
           style="object-position: center 28%;"
         />
@@ -123,7 +120,7 @@ const {
             lang={lang}
             slug={project.slug}
             title={project.title}
-            imageUrl={project.imageUrl}
+            imageUrl={project.galleryImagesTranslated?.[0]?.src || ''} // Change this for the home page featured projects
             imageAltText={project.imageAltText}
             ctaText={projectPreviewCtaText}
           />

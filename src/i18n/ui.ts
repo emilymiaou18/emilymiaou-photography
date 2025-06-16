@@ -70,7 +70,8 @@ export const ui = {
       weddings: 'Weddings',
       contact: 'Contact',
       events: 'Events',
-      landscape: 'Landscape',
+      landscapes: 'Landscapes',
+      miscellanies: 'Miscellanies',
     },
     footer: {
       rights: 'All rights reserved.',

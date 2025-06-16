@@ -1,5 +1,5 @@
 ---
-import type { LanguageCode, ui } from '@/i18n/ui';
+import type { LanguageCode, ui } from '@/i18n/events_ui';
 import SectionCard from '@/components/section-card.astro';
 import { EmptyState } from '@/components/empty-state';
 import Heading from '@/components/Heading.astro';
@@ -21,7 +21,9 @@ const projectsPageTranslations = t.projectsPage; // For easier access
     projects && projects.length > 0 ? (
       <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project: TranslatedProject) => {
-          const projectUrl = `${lang === 'fr' ? '' : '/' + lang}/weddings/${project.slug}`;
+          const projectUrl = `${lang === 'en' ? '' : '/' + lang}/events/${project.slug}`;
+          const imageUrl = project.galleryImages?.filter(img => img.id.includes("horizontal")).slice(-1)[0].src;
+
           return (
             <a
               href={projectUrl}
@@ -33,8 +35,7 @@ const projectsPageTranslations = t.projectsPage; // For easier access
                 categoryText={project.categoryText}
                 className="w-full"
                 classNameTitle="text-xl"
-                tags={project.tags ?? []}
-                imageUrl={project.imageUrl}
+                imageUrl={imageUrl}
                 imageAltText={project.imageAltText}
               >
                 <p class="text-sm text-muted-foreground">

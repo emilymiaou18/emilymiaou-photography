@@ -4,9 +4,11 @@ interface RenderRowProps {
   images: ImageMetadata[];
   layout: 'HH' | 'VVH' | 'VVV' | 'VHV' | 'HVV';
 }
-
+// TODO: find a way to make sure the height remains the same as the window resizes (becomes smaller)
 export default function RenderImageRow({images, layout}: RenderRowProps) {
-  const total_width = 1500;
+  const total_width = 1200;
+  // const margin_width = String(Math.round(total_width / 40))+'px';
+  const margin_width = '0px';
   const layoutLength = layout.length;
   console.log('Layout:', layout, 'Length:', layoutLength);
   if (images.length < layoutLength) {
@@ -15,49 +17,51 @@ export default function RenderImageRow({images, layout}: RenderRowProps) {
   }
   console.log('Rendering image row with layout:', layout);
 
-  const h_width = total_width / 7 * 3;
-  const h_height = h_width / 3 * 2;
-  const v_width = total_width / 7 * 2;
-  const v_height = v_width * 3 / 2;
   var widths: number[] = [];
   var heights: number[] = [];
+  var marginsLeft: string[] = [];
+  var marginsRight: string[] = [];
   // Calculate width and height based on layout
+  const factor = 9 / 8.5;
   if (layout === 'HH') {
-    widths = [h_width, h_width];
-    heights = [h_height, h_height];
+    widths = [total_width / 9 * 4.5 + 3, total_width / 9 * 4.5 + 3];  // +3 so that 2 images are the same width as 3 images
+    heights = [total_width / 9 * 3 + 2, total_width / 9 * 3 + 2];
+    marginsLeft = ['', ''];
+    marginsRight = ['', ''];
   }
   else if (layout === 'VVH') {
-    widths = [v_width, v_width, h_width];
-    heights = [v_height, v_height, h_height];
+    widths = [total_width / 9 * 2, total_width / 9 * 2, total_width / 9 * 4.5].map(w => w * factor);
+    heights = [total_width / 9 * 3, total_width / 9 * 3, total_width / 9 * 3].map(h => h * factor);
+    marginsLeft = ['', '', ''];
+    marginsRight = ['', '', ''];
   }
   else if (layout === 'VVV') {
-    widths = [v_width, v_width, v_width];
-    heights = [v_height, v_height, v_height];
+    widths = [total_width / 9 * 3, total_width / 9 * 3, total_width / 9 * 3]
+    heights = [total_width / 9 * 4.5, total_width / 9 * 4.5, total_width / 9 * 4.5];
+    marginsLeft = ['', '', ''];
+    marginsRight = ['', '', ''];
   }
   else if (layout === 'VHV') {
-    widths = [v_width, h_width, v_width];
-    heights = [v_height, h_height, v_height];
+    widths = [total_width / 9 * 2, total_width / 9 * 4.5, total_width / 9 * 2].map(w => w * factor);
+    heights = [total_width / 9 * 3, total_width / 9 * 3, total_width / 9 * 3].map(h => h * factor);
+    marginsLeft = ['', '', ''];
+    marginsRight = ['', '', ''];
   }
   else if (layout === 'HVV') {
-    widths = [h_width, v_width, v_width];
-    heights = [h_height, v_height, v_height];
+    widths = [total_width / 9 * 4.5, total_width / 9 * 2, total_width / 9 * 2].map(w => w * factor);
+    heights = [total_width / 9 * 3, total_width / 9 * 3, total_width / 9 * 3].map(h => h * factor);
+    marginsLeft = ['', '', ''];
+    marginsRight = ['', '', ''];
   }
-
+  
   return (
-    <div className="flex gap-2 w-[1000px] justify-center">
-      {images.slice(0, layoutLength).map((img, i) => (
-        <div
-          key={img.src}
-          className="flex-shrink-0 rounded-md overflow-hidden justify-center"
-          style={{ height: `${heights[i]}px`, width: `${widths[i]}px` }}
-        >
-          <img
-            src={img.src+i}
-            className="h-full w-full rounded-md object-cover"
-            loading="lazy"
-          />
+    <div className="flex mb-1.5 gap-1.5 w-full justify-center items-center">
+      {images.slice(0, layoutLength).map((img, i) => {
+        return (
+        <div key={img.src+i} className={`rounded-md`} style={{ height: `${heights[i]}px`, width: `${widths[i]}px`, marginLeft: marginsLeft[i], marginRight: marginsRight[i] }}>
+          <img src={img.src} className="rounded-md" loading="lazy" />
         </div>
-      ))}
+      )})}
     </div>
   );
 }

@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { ui, type LanguageCode } from '@/i18n/ui';
+import { ui, type LanguageCode } from '@/i18n/events_ui';
 import {
   ProjectScreen,
   getTranslatedProjects,
   type TranslatedProject,
-} from '@/features/projects';
+} from '@/features/events';
 
 export async function getStaticPaths() {
   const paths = [];

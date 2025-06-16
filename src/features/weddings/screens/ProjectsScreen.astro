@@ -33,8 +33,7 @@ const projectsPageTranslations = t.projectsPage; // For easier access
                 categoryText={project.categoryText}
                 className="w-full"
                 classNameTitle="text-xl"
-                tags={project.tags ?? []}
-                imageUrl={project.imageUrl}
+                imageUrl={project.galleryImages[0].src}
                 imageAltText={project.imageAltText}
               >
                 <p class="text-sm text-muted-foreground">

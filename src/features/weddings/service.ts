@@ -2,40 +2,29 @@
 import { ui, defaultLanguage, type LanguageCode } from '@/i18n/weddings_ui';
 import placeholderImage from '@/assets/placeholder.webp';
 import type {
-  ProjectData,
-  SkillData,
-  TranslatedProject,
-  TranslatedSkill,
+  ProjectData, TranslatedProject
 } from './type';
 
-const GloriaHaoEngagementObject = import.meta.glob(
+const GloriaHaoEngagement = Object.entries(import.meta.glob(
   '/src/assets/2022-09-12 Gloria & Hao Engagement/*.webp',
   { eager: true, import: 'default' }
-);
-
-const GloriaHaoEngagement = Object.entries(GloriaHaoEngagementObject).map(([path, src], index) => ({
+)).map(([path, src], index) => ({
   id: path,
   src,
 }));
 
-
-const EugeneFloWeddingObject = import.meta.glob(
+const EugeneFloWedding = Object.entries(import.meta.glob(
   '/src/assets/2022-08-05 Eugene & Flo Wedding/*.webp',
   { eager: true, import: 'default' }
-);
-
-const EugeneFloWedding = Object.entries(EugeneFloWeddingObject).map(([path, src], index) => ({
+)).map(([path, src], index) => ({
   id: path,
   src,
 }));
 
-
-const TylerJiayiWeddingObject = import.meta.glob(
+const TylerJiayiWedding = Object.entries(import.meta.glob(
   '/src/assets/2022-02-22 Tyler & Jiayi Wedding/*.webp',
   { eager: true, import: 'default' }
-);
-
-const TylerJiayiWedding = Object.entries(TylerJiayiWeddingObject).map(([path, src], index) => ({
+)).map(([path, src], index) => ({
   id: path,
   src,
 }));
@@ -45,68 +34,20 @@ const projectsListUnsorted: Array<ProjectData> = [
   {
     id: 'GloriaHao', // Unique identifier for translations
     slug: 'gloria-hao', // Used in the URL
-    imageUrl: GloriaHaoEngagement[0].src, // Use imported ImageMetadata
-    // projectUrl: '#', // Optional: Link to the live project
-    // codeUrl: '#', // Optional: Link to the source code
-    tags: ['Astro', 'TypeScript', 'Template'], // Generic tags
-    category: 'Web Application', // Generic category
     date: '2022-09-12', // Generic date
     galleryImages: GloriaHaoEngagement,
-    keyFeatures: [
-      // Key features (IDs for translation)
-      // { id: 'responsiveDesign' },
-      // { id: 'contentManagement' },
-    ],
-    technologiesUsed: [
-      // Technologies used (IDs for display)
-      { id: 'astro', name: 'Astro' },
-      { id: 'typescript', name: 'TypeScript' },
-      { id: 'tailwindcss', name: 'TailwindCSS' },
-    ],
   },
   {
     id: 'EugeneFlo', // Unique identifier for translations
     slug: 'eugene-flo', // Used in the URL
-    imageUrl: EugeneFloWedding[0].src, // Use imported ImageMetadata
-    // projectUrl: '#', // Optional: Link to the live project
-    // codeUrl: '#', // Optional: Link to the source code
-    tags: ['Astro', 'TypeScript', 'Template'], // Generic tags
-    category: 'Web Application', // Generic category
     date: '2022-08-05', // Generic date
     galleryImages: EugeneFloWedding,
-    keyFeatures: [
-      // Key features (IDs for translation)
-      // { id: 'responsiveDesign' },
-      // { id: 'contentManagement' },
-    ],
-    technologiesUsed: [
-      // Technologies used (IDs for display)
-      { id: 'astro', name: 'Astro' },
-      { id: 'typescript', name: 'TypeScript' },
-      { id: 'tailwindcss', name: 'TailwindCSS' },
-    ],
   },
     {
     id: 'TylerJiayi', // Unique identifier for translations
     slug: 'tyler-jiayi', // Used in the URL
-    imageUrl: TylerJiayiWedding[0].src, // Use imported ImageMetadata
-    // projectUrl: '#', // Optional: Link to the live project
-    // codeUrl: '#', // Optional: Link to the source code
-    tags: ['Astro', 'TypeScript', 'Template'], // Generic tags
-    category: 'Web Application', // Generic category
     date: '2022-02-22', // Generic date
     galleryImages: TylerJiayiWedding,
-    keyFeatures: [
-      // Key features (IDs for translation)
-      // { id: 'responsiveDesign' },
-      // { id: 'contentManagement' },
-    ],
-    technologiesUsed: [
-      // Technologies used (IDs for display)
-      { id: 'astro', name: 'Astro' },
-      { id: 'typescript', name: 'TypeScript' },
-      { id: 'tailwindcss', name: 'TailwindCSS' },
-    ],
   },
 ];
 
@@ -143,7 +84,7 @@ function translateProject(
       title: project.id, // Fallback title
       description: 'Description missing for this project.', // Fallback description
       imageAltText: 'Placeholder image', // Fallback alt text
-      categoryText: project.category,
+      // categoryText: project.category,
       dateText: project.date,
       detailedDescription: 'Detailed description missing.',
       keyFeaturesTranslated:

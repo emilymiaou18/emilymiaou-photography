@@ -1,0 +1,44 @@
+---
+import type { LanguageCode, ui } from '@/i18n/landscapes_ui';
+import SectionCard from '@/components/section-card.astro';
+import { EmptyState } from '@/components/empty-state';
+import Heading from '@/components/Heading.astro';
+import RenderImageRow from '@/features/landscapes/components/RenderedRow.tsx';
+import type { TranslatedProject } from '../type';
+import { ostring } from 'astro:schema';
+
+export type Props = {
+  projects: Array<TranslatedProject>;
+  t: (typeof ui)[LanguageCode];
+  lang: LanguageCode;
+};
+
+const { projects, t, lang } = Astro.props;
+
+const allImages = Object.entries(import.meta.glob(
+  '/src/assets/Landscapes/*.webp',
+  { eager: true, import: 'default' }
+)).map(([path, src], index) => ({
+  id: path,
+  src,
+}));
+
+---
+
+<div class="py-12 md:py-16">
+  <Heading title="Landscapes" />
+  
+  
+  {
+    allImages.length > 0 && (() => {
+      const renderedRows = [];
+      allImages.map((img, index) => {
+        renderedRows.push(<RenderImageRow image={img.src} />);
+      });
+
+      return <div class="mb-1 justify-center">{renderedRows}</div>;
+    })()
+  }
+  
+
+</div>

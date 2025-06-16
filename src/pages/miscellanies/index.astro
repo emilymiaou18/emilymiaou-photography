@@ -1,0 +1,30 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ui, type LanguageCode, defaultLanguage, languages } from '@/i18n/miscellanies_ui';
+import {
+  ProjectScreen,
+  getTranslatedProjects,
+  ProjectsScreen,
+  type TranslatedProject,
+} from '@/features/miscellanies';
+
+let lang: LanguageCode;
+const currentLocale = Astro.currentLocale;
+
+if (currentLocale && currentLocale in languages) {
+  lang = currentLocale as LanguageCode;
+} else {
+  lang = defaultLanguage;
+}
+
+const t = ui[lang] as (typeof ui)[typeof defaultLanguage];
+
+const metaTitle =
+  'Miscellanies';
+const metaDescription =
+  'Miscellaneous photos that I have taken throughout the years.';
+---
+
+<BaseLayout pageTitle={metaTitle} pageDescription={metaDescription}>
+  <ProjectsScreen projects={[]} t={t} lang={lang} />
+</BaseLayout>

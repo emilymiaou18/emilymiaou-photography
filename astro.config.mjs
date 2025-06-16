@@ -23,6 +23,13 @@ console.log(`Using Mermaid strategy: ${mermaidStrategy}`);
 export default defineConfig({
   site: 'https://emilymiaou18.github.io', // IMPORTANT: Replace with your actual domain in production
   base: '/',
+  build: {
+    outDir: './dist',
+    client: '.',
+    server: './server',
+    srcDir: './src',
+  },
+  output: 'static',
   integrations: [
     react(),
     mdx({

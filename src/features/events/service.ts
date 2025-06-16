@@ -1,6 +1,5 @@
 // Import i18n utilities
 import { ui, defaultLanguage, type LanguageCode } from '@/i18n/events_ui';
-// import placeholderImage from '@/assets/placeholder.webp';
 import type {
   ProjectData, TranslatedProject
 } from './type';

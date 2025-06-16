@@ -25,11 +25,15 @@ export default defineConfig({
   base: '/',
   build: {
     outDir: './dist',
-    client: '.',
+    client: '.', // Strange, but I have to set this to '.' to avoid the dist/client folder
     server: './server',
     srcDir: './src',
+    format: 'directory',
   },
   output: 'static',
+  prefetch: {
+    prefetchAll: true
+  },
   integrations: [
     react(),
     mdx({

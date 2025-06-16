@@ -3,7 +3,7 @@ from PIL import Image
 from PIL.ExifTags import TAGS
 from datetime import datetime
 from multiprocessing import Pool, cpu_count
-
+import subprocess
 def get_time_dimension(file_path):
     try:
         image = Image.open(file_path)
@@ -21,32 +21,53 @@ def get_time_dimension(file_path):
     return None, None
 
 
-def process_photo(args):
+# def process_photo(args):
+#     i, (path, folder, dt, orientation) = args
+#     ext = '.webp'
+    
+#     new_filename = f"{i:04d}-{orientation}{ext}"
+#     new_path = os.path.join(folder, new_filename)
+
+#     try:
+#         if not path.lower().endswith('.webp'):
+#             with Image.open(path) as img:
+#                 img.save(new_path, 'WEBP', quality=100)
+#             os.remove(path)
+#             return f'✅ Converted: {path} → {new_path}'
+#         else:
+#             os.rename(path, new_path)
+#             return f'✅ Renamed: {path} → {new_path}'
+#     except Exception as e:
+#         return f'❌ Failed to process {path}: {e}'
+
+
+def convert_with_cwebp(args):
     i, (path, folder, dt, orientation) = args
     ext = '.webp'
-    
+
     new_filename = f"{i:04d}-{orientation}{ext}"
     new_path = os.path.join(folder, new_filename)
 
     try:
-        if not path.lower().endswith('.webp'):
-            with Image.open(path) as img:
-                img.save(new_path, 'WEBP', quality=100)
-            os.remove(path)
-            return f'✅ Converted: {path} → {new_path}'
-        else:
-            os.rename(path, new_path)
-            return f'✅ Renamed: {path} → {new_path}'
-    except Exception as e:
-        return f'❌ Failed to process {path}: {e}'
+        # cwebp supports -metadata all to preserve EXIF/XMP/IPTC
+        subprocess.run([
+            "cwebp",
+            "-q", str(80),
+            "-metadata", "all",
+            path,
+            "-o", new_path
+        ], check=True)
+
+        print(f"Converted {path} -> {new_path} with metadata")
+
+    except subprocess.CalledProcessError as e:
+        print(f"cwebp failed on {path}: {e}")
 
 # Folder containing your photos
-# folders = [os.path.join("Weddings", folder) for folder in os.listdir("Weddings") if os.path.isdir(os.path.join("Weddings", folder))]
-# folders = ["Graduations"]
-folders = ["Miscellanies"]
+folders = ["Miscellanies", "Graduations", "Landscapes"] + [os.path.join("Weddings", folder) for folder in os.listdir("Weddings") if os.path.isdir(os.path.join("Weddings", folder))] + [os.path.join("Events", folder) for folder in os.listdir("Events") if os.path.isdir(os.path.join("Events", folder))]
 
 if __name__ == '__main__':
-    with Pool(processes=cpu_count()) as pool:
+    with Pool(processes=10) as pool:
         for folder in folders:
             # Collect photos and their timestamps
             photos_horizontal = []
@@ -77,5 +98,11 @@ if __name__ == '__main__':
             # results = pool.map(process_photo, list(enumerate(photos_vertical, start=1)))
             # print("Vertical photos processed.")
             print(f"Processing {len(photos)} photos in {folder}...")
-            results = pool.map(process_photo, list(enumerate(photos, start=1)))
+            results = pool.map(convert_with_cwebp, list(enumerate(photos, start=0)))
             print("All photos processed.")
+
+            for filename in os.listdir(folder):
+                path = os.path.join(folder, filename)
+                if not filename.lower().endswith(('.webp')):
+                    print(f"Removing original file: {path}")
+                    os.remove(path)
